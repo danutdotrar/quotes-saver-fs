@@ -11,34 +11,28 @@ const App = () => {
     }, []);
 
     const handleQuoteChange = (e) => {
-        console.log(e.target.value);
         setQuote(e.target.value);
     };
 
     const handleAuthorChange = (e) => {
-        console.log(e.target.value);
         setAuthor(e.target.value);
     };
 
     const addQuote = (e) => {
         e.preventDefault();
-        const quotesObject = { quote: quote, author: author, id: generateId() };
+        const quotesObject = { quote: quote, author: author };
 
-        if (quote && author) {
-            setQuotesList(quotesList.concat(quotesObject));
-        }
-
-        setQuote("");
-        setAuthor("");
-    };
-
-    const generateId = () => {
-        return Math.floor(Math.random() * 10000);
+        quoteService.create(quotesObject).then((response) => {
+            setQuotesList(quotesList.concat(response.data));
+            setQuote("");
+            setAuthor("");
+        });
     };
 
     const deleteQuote = (id) => {
         const quotes = quotesList.filter((quote) => quote.id !== id);
-        setQuotesList(quotes);
+
+        quoteService.deleteQuote(id).then(() => setQuotesList(quotes));
     };
 
     return (
