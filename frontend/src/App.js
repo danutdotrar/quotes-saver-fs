@@ -3,7 +3,7 @@ import { useState } from "react";
 const App = () => {
     const [quote, setQuote] = useState("");
     const [author, setAuthor] = useState("");
-    const [quoteList, setQuotesList] = useState([
+    const [quotesList, setQuotesList] = useState([
         {
             quote: "Whatever the mind of man can conceive and believe, it can achieve.",
             author: "Napoleon Hill",
@@ -35,14 +35,21 @@ const App = () => {
         e.preventDefault();
         const quotesObject = { quote: quote, author: author, id: generateId() };
 
-        setQuotesList(quoteList.concat(quotesObject));
-        console.log(quoteList);
+        if (quote && author) {
+            setQuotesList(quotesList.concat(quotesObject));
+        }
+
         setQuote("");
         setAuthor("");
     };
 
     const generateId = () => {
         return Math.floor(Math.random() * 10000);
+    };
+
+    const deleteQuote = (id) => {
+        const quotes = quotesList.filter((quote) => quote.id !== id);
+        setQuotesList(quotes);
     };
 
     return (
@@ -69,11 +76,14 @@ const App = () => {
 
             <h1>Quote List</h1>
             <div>
-                {quoteList.map((item) => {
+                {quotesList.map((item) => {
                     return (
                         <ul key={item.id}>
                             <li>
-                                {item.quote} - {item.author}
+                                {item.quote} - {item.author}{" "}
+                                <button onClick={() => deleteQuote(item.id)}>
+                                    delete
+                                </button>
                             </li>
                         </ul>
                     );
