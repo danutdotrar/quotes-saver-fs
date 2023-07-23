@@ -22,11 +22,13 @@ const App = () => {
         e.preventDefault();
         const quotesObject = { quote: quote, author: author };
 
-        quoteService.create(quotesObject).then((response) => {
-            setQuotesList(quotesList.concat(response.data));
-            setQuote("");
-            setAuthor("");
-        });
+        if (quotesObject.quote && quotesObject.author) {
+            quoteService.create(quotesObject).then((response) => {
+                setQuotesList(quotesList.concat(response.data));
+                setQuote("");
+                setAuthor("");
+            });
+        }
     };
 
     const deleteQuote = (id) => {
