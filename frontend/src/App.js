@@ -1,25 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import quoteService from "./services/quotes";
 
 const App = () => {
     const [quote, setQuote] = useState("");
     const [author, setAuthor] = useState("");
-    const [quotesList, setQuotesList] = useState([
-        {
-            quote: "Whatever the mind of man can conceive and believe, it can achieve.",
-            author: "Napoleon Hill",
-            id: 1,
-        },
-        {
-            quote: "Strive not to be a success, but rather to be of value.",
-            author: "Albert Einstein",
-            id: 2,
-        },
-        {
-            quote: "Eighty percent of success is showing up.",
-            author: "Woody Allen",
-            id: 3,
-        },
-    ]);
+    const [quotesList, setQuotesList] = useState([]);
+
+    useEffect(() => {
+        quoteService.getAll().then((response) => setQuotesList(response.data));
+    }, []);
 
     const handleQuoteChange = (e) => {
         console.log(e.target.value);
